@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     public AudioClip startMusic;
+    public int a;
 
     void Start()
     {

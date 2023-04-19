@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public Transform ground_check;
     bool on_ground;
     public Main main;
-
+    public bool kek;
     
 
     void Start()
