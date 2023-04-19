@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSprung: {fileID: 8300000, guid: 40b224beb1b00ee4f98ebbad546e14d6, type: 3}
+  power_of_sprung: 0
 --- !u!82 &7720732570304736429
 AudioSource:
   m_ObjectHideFlags: 0
@@ -159,7 +160,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.706
   m_Pitch: 1
   Loop: 0
   Mute: 0

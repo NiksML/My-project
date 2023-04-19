@@ -14,7 +14,10 @@ public class Player : MonoBehaviour
     public Transform ground_check;
     bool on_ground;
     public Main main;
-    
+    public bool[] keys;
+    public GameObject portal;
+    bool can_tp = true;
+    float wait_time = 2;
 
     void Start()
     {
@@ -61,7 +64,7 @@ public class Player : MonoBehaviour
     }
     void CheckY()
     {
-        if (transform.position.y < -20)
+        if (transform.position.y < -30)
         {
             Lose();
         }
@@ -104,6 +107,61 @@ public class Player : MonoBehaviour
     {
         audioSource.PlayOneShot(sound);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Portal")
+        {
+            int number_of_portal = collision.GetComponent<Portal>().number_of_portal;
+            if (keys[number_of_portal] == true)
+            {
+                collision.GetComponent<Portal>().OpenDoor();
+            }
+
+            if (collision.GetComponent<Portal>().isOpen == true && can_tp)
+            {
+                collision.GetComponent<Portal>().TP(gameObject);
+                can_tp = false;
+                StartCoroutine(Wait_For_TP());
+            }
+        }
+    }
+
+    IEnumerator Wait_For_TP()
+    {
+        yield return new WaitForSeconds(wait_time);
+        can_tp = true;
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder")
+        {
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            if (Input.GetAxis("Vertical") !=0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * speed_of_player * 0.5f);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0f);
+            }
+        }
+
+        if (collision.gameObject.tag == "Key")
+        {
+            keys[collision.GetComponent<Key>().number_key] = true;
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder")
+        {
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * speed_of_player);
+        }
+    }
 
     
+
 }

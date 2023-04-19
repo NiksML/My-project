@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour  
 {
     public GameObject player;
     public float dmg;
     public AudioClip sound;
     public float power_of_jump;
+
     // Start is called before the first frame update
     void OnCollisionEnter2D(Collision2D enemy)
     {

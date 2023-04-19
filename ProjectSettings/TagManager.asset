@@ -8,6 +8,8 @@ TagManager:
   - Key
   - Tilemap_ground
   - Water
+  - Ladder
+  - Portal
   layers:
   - Default
   - TransparentFX
