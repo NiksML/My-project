@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     public float speed_of_player;
     public float jump_height;
     public float curr_hp_of_player;
-    public float max_hp_of_player=1000; 
+    public float max_hp_of_player=1000;
+    bool inWater;
+    bool isClimbing;
     public Transform ground_check;
     bool on_ground;
     public Main main;
@@ -37,16 +39,39 @@ public class Player : MonoBehaviour
         CheckY();
         Jump();
         CheckGround();
-        if (Input.GetAxis("Horizontal") == 0 && on_ground)
+        Anime();
+        
+    }
+
+    void Anime()
+    {
+        if (Input.GetAxis("Horizontal") == 0 && on_ground && !inWater && !isClimbing)
         {
             anim.SetInteger("State", 1);
         }
+
+        else if(isClimbing)
+        {
+            if(Input.GetAxis("Vertical") == 0)
+            {
+                anim.SetInteger("State", 5);
+            }
+            else
+            {
+                anim.SetInteger("State", 6);
+            }
+        }
+
         else
         {
-            Flip(); 
-            if(on_ground)
+            Flip();
+            if (on_ground && !inWater)
             {
                 anim.SetInteger("State", 3);
+            }
+            else if(inWater)
+            {
+                anim.SetInteger("State", 4);
             }
         }
     }
@@ -146,15 +171,21 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.tag == "Ladder")
         {
+            isClimbing = true;
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             if (Input.GetAxis("Vertical") !=0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * speed_of_player * 0.5f);
             }
             else
-            {
+            {       
                 rb.velocity = new Vector2(rb.velocity.x, 0f);
             }
+        }
+
+        if (collision.gameObject.tag == "Water")
+        {
+            inWater = true;
         }
     }
 
@@ -162,8 +193,14 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ladder")
         {
+            isClimbing = false;
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             rb.velocity = new Vector2(rb.velocity.x, Input.GetAxis("Vertical") * speed_of_player);
+        }
+
+        if (collision.gameObject.tag == "Water")
+        {
+            inWater = false;
         }
     }
 

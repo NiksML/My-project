@@ -8,6 +8,7 @@ public class InteractiveObjects : MonoBehaviour
     public int chooseType;
     public Player player;
     public AudioClip sound;
+    public EffectsOnTime timeEffect;
 
 
 
@@ -31,52 +32,27 @@ public class InteractiveObjects : MonoBehaviour
                 Destroy(gameObject);
                 break;
             case 3:
-                
-                StartCoroutine(Waiting(1f,3));
+                player.speed_of_player = player.speed_of_player * 1.5f;
+                print("speed = " + player.speed_of_player);
+                timeEffect.GetComponent<EffectsOnTime>().EffectActivated(3f,3);
                 player.GetComponent<AudioSource>().PlayOneShot(sound);
                 Destroy(gameObject);
                 break;
             case 4:
                 player.jump_height = player.jump_height * 1.5f;
-                StartCoroutine(Waiting(5f,4));
+                print("junpheight = " + player.jump_height);
+                timeEffect.GetComponent<EffectsOnTime>().EffectActivated(3f, 4);
                 player.GetComponent<AudioSource>().PlayOneShot(sound);
                 Destroy(gameObject);
                 break;
             case 5:
                 Time.timeScale = 0.5f;
-                StartCoroutine(Waiting(5f,5));
+                print("timeScale = " + Time.timeScale);
+                timeEffect.GetComponent<EffectsOnTime>().EffectActivated(3f, 5);
                 player.GetComponent<AudioSource>().PlayOneShot(sound);
                 Destroy(gameObject);
                 break;
 
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    IEnumerator Waiting(float time, int typeObjt)
-    {
-        switch (typeObjt)
-        {
-            case 3:
-                player.speed_of_player = player.speed_of_player * 2.5f;
-                print("speed = " + player.speed_of_player);
-                yield return new WaitForSeconds(time);
-                player.speed_of_player = player.speed_of_player / 2.5f;
-                print("speed = " + player.speed_of_player);
-                break;
-            case 4:
-                
-                player.jump_height = player.jump_height / 1.5f;
-                break;
-            case 5:
-                
-                Time.timeScale = 1f;
-                break;
         }
     }
 }

@@ -89,7 +89,7 @@ public class Fish : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, rand.position, speed * Time.deltaTime);
                 if (transform.position == rand.position)
                 {
-                    print("case 1");
+                    print("Я пришел");
                 }
                 break;
 
@@ -159,7 +159,7 @@ public class Fish : MonoBehaviour
                 print("case 7");
                 break;
 
-            case (true, false, true, true): // сработает если не можем двигаться влево
+            case (true, false, true, true): // сработает если не можем двигаться влевоё
                 do
                 {
                     rand.position = new Vector3(transform.position.x + Random.Range(10f, 20f), transform.position.y + Random.Range(-2f, 2f), transform.position.z);
