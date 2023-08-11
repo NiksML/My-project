@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections;   
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +15,14 @@ public class Player : MonoBehaviour
     bool on_ground;
     public Main main;
     public bool[] keys;
+    public bool[] buffs;
+    public bool[] debaffs;
     public GameObject portal;
     bool can_tp = true;
-    float wait_time = 2;
+    readonly float wait_time = 2;
+    public int goldCoin = 0;
+    public int silverCoin = 0;
+    public int copperCoin = 0;
 
     void Start()
     {
@@ -109,6 +114,20 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Key")
+        {
+            keys[collision.GetComponent<Key>().number_key] = true;
+            Destroy(collision.gameObject);
+        }
+    }
+
+    IEnumerator Wait_For_TP()
+    {
+        yield return new WaitForSeconds(wait_time);
+        can_tp = true;
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
         if (collision.gameObject.tag == "Portal")
         {
             int number_of_portal = collision.GetComponent<Portal>().number_of_portal;
@@ -124,15 +143,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(Wait_For_TP());
             }
         }
-    }
 
-    IEnumerator Wait_For_TP()
-    {
-        yield return new WaitForSeconds(wait_time);
-        can_tp = true;
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
         if (collision.gameObject.tag == "Ladder")
         {
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
@@ -144,12 +155,6 @@ public class Player : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0f);
             }
-        }
-
-        if (collision.gameObject.tag == "Key")
-        {
-            keys[collision.GetComponent<Key>().number_key] = true;
-            Destroy(collision.gameObject);
         }
     }
 
