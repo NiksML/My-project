@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     public int goldCoin = 0;
     public int silverCoin = 0;
     public int copperCoin = 0;
+    public bool x_vel = true;
+    public bool y_vel = false;
 
     void Start()
     {
@@ -78,7 +80,22 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed_of_player, rb.velocity.y);
+        Moving(x_vel, y_vel);
+    }
+
+    public void Moving(bool xIsOn, bool yIsOn)
+    {
+        switch(xIsOn, yIsOn)
+        {
+            case (true,false) :
+                
+                rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed_of_player, rb.velocity.y);
+                break;
+            case(true,true) :
+                rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed_of_player, Input.GetAxis("Vertical") * speed_of_player);
+                break;
+        }
+        
     }
 
     void Flip()
@@ -112,7 +129,7 @@ public class Player : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(ground_check.position, 0.2f);
         on_ground = colliders.Length > 1;
-        if (!on_ground)
+        if (!on_ground && !y_vel)
         {
             anim.SetInteger("State", 2);
         }
@@ -151,6 +168,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(wait_time);
         can_tp = true;
     }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Portal")
@@ -204,6 +222,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+   /* public void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Tilemap_ground" && rb.bodyType == RigidbodyType2D.Kinematic)
+        {
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            
+        }
+    }*/
+
 
 }

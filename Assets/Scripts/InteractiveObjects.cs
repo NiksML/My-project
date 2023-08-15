@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static TreeEditor.TreeEditorHelper;
 
 public class InteractiveObjects : MonoBehaviour
 {
-    public string[] typeOfObject = {"goldCoin", "silverCoin", "copperCoin", "speedMashroom", "jumpMashroom", "slowtimeMashroom"};
+    public string[] typeOfObject = {"goldCoin", "silverCoin", "copperCoin", "speedMashroom", "jumpMashroom", "slowtimeMashroom", "gravityStar"};
     public int chooseType;
     public Player player;
     public AudioClip sound;
@@ -46,10 +47,18 @@ public class InteractiveObjects : MonoBehaviour
                 Destroy(gameObject);
                 break;
             case 5:
-                Time.timeScale = 0.5f;
+                Time.timeScale = 0.3f;
                 print("timeScale = " + Time.timeScale);
                 timeEffect.GetComponent<EffectsOnTime>().EffectActivated(3f, 5);
                 player.GetComponent<AudioSource>().PlayOneShot(sound);
+                Destroy(gameObject);
+                break;
+            case 6:
+                player.GetComponent<Rigidbody2D>().gravityScale = 0;
+                player.GetComponent<Animator>().SetInteger("State", 4);
+                player.y_vel = true;
+                player.GetComponent<AudioSource>().PlayOneShot(sound);
+                timeEffect.GetComponent<EffectsOnTime>().EffectActivated(3f, 6);
                 Destroy(gameObject);
                 break;
 

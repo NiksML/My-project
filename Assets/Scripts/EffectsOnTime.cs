@@ -29,6 +29,11 @@ public class EffectsOnTime : MonoBehaviour
                 Time.timeScale = 1f;
                 print("timeScale = " + Time.timeScale);
                 break;
+            case 6:
+                yield return new WaitForSeconds(time);
+                player.y_vel = false;
+                player.GetComponent<Rigidbody2D>().gravityScale = 1;
+                break;
         }
     }
 }
